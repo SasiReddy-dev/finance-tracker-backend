@@ -25,4 +25,9 @@ app.include_router(analytics_routes.router, prefix="/analytics", tags=["Analytic
 from database import Base, engine
 from models import user, transaction
 
+
 Base.metadata.create_all(bind=engine)
+
+import os
+
+port = int(os.environ.get("PORT", 10000))
