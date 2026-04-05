@@ -6,30 +6,31 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Get DB URL from .env
+# 🔹 Get DB URL
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-# If not set → use SQLite (for deployment)
-if not DATABASE_URL:
+# 🔥 IMPORTANT FIX
+# If running on Render OR using localhost → switch to SQLite
+if not DATABASE_URL or "localhost" in DATABASE_URL:
     DATABASE_URL = "sqlite:///./test.db"
 
-# SQLite specific setting
+# 🔹 SQLite needs this setting
 connect_args = {}
 if DATABASE_URL.startswith("sqlite"):
     connect_args = {"check_same_thread": False}
 
-# Create engine
+# 🔹 Create engine
 engine = create_engine(
     DATABASE_URL,
     connect_args=connect_args
 )
 
-# Session
+# 🔹 Session
 SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,
     bind=engine
 )
 
-# Base
+# 🔹 Base
 Base = declarative_base()
